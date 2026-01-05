@@ -74,10 +74,6 @@ export const createField = asyncHandler(
     const userId = req.user?.user_id;
     const { name, description, topics } = req.body;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     if (!name) {
       return res.status(400).json({ error: "Name is required" });
     }
