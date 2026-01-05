@@ -181,10 +181,6 @@ export const deleteField = asyncHandler(
     const userId = req.user?.user_id;
     const { fieldId } = req.params;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     try {
       await dynamo.send(
         new DeleteItemCommand({
