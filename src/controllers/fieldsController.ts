@@ -115,10 +115,6 @@ export const updateField = asyncHandler(
     const { fieldId } = req.params;
     const { name, description, topics } = req.body;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     try {
       const updateExpression: string[] = [];
       const expressionAttributeNames: Record<string, string> = {};
