@@ -53,7 +53,7 @@ export const getTopics = asyncHandler(
 
 export const getTopicsByDate = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
-    const { date } = req.params;
+    const { date } = req.query;
 
     try {
       const result = await dynamo.send(
