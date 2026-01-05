@@ -14,6 +14,7 @@
     - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-articles
     - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-notes
     - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-fields
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-rss-sources
     - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/*/index/*
 
 - Effect: Allow

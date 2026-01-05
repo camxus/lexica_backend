@@ -4,7 +4,6 @@ import {
   getProfile,
   updateProfile,
   uploadAvatar,
-  getUserProgress,
 } from "../controllers/usersController";
 
 const router: Router = express.Router();
