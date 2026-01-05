@@ -1,0 +1,22 @@
+api:
+  handler: dist/server.handler
+  runtime: nodejs20.x
+  timeout: 30
+  memorySize: 512
+  events:
+    - httpApi:
+        path: /{proxy+}
+        method: ANY
+        authorizer: jwtAuthorizer
+    - httpApi:
+        path: /api/auth/{proxy+}
+        method: ANY
+    - httpApi:
+        path: /health
+        method: GET
+
+authorizer:
+  handler: dist/middleware/auth.authorizer
+  runtime: nodejs20.x
+  timeout: 30
+  memorySize: 256

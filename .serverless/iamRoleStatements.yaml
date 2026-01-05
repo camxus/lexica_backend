@@ -1,0 +1,60 @@
+- Effect: Allow
+  Action:
+    - dynamodb:Query
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:PutItem
+    - dynamodb:UpdateItem
+    - dynamodb:DeleteItem
+    - dynamodb:BatchGetItem
+    - dynamodb:BatchWriteItem
+  Resource:
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-users
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-topics
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-articles
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-notes
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-${sls:stage}-fields
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/*/index/*
+
+- Effect: Allow
+  Action:
+    - s3:GetObject
+    - s3:PutObject
+    - s3:DeleteObject
+    - s3:CopyObject
+  Resource:
+    - arn:aws:s3:::${env:EXPRESS_S3_APP_BUCKET}/*
+    - arn:aws:s3:::${env:EXPRESS_S3_TEMP_BUCKET}/*
+
+- Effect: Allow
+  Action:
+    - s3:ListBucket
+  Resource:
+    - arn:aws:s3:::${env:EXPRESS_S3_APP_BUCKET}
+    - arn:aws:s3:::${env:EXPRESS_S3_TEMP_BUCKET}
+
+- Effect: Allow
+  Action:
+    - kms:Decrypt
+    - kms:GenerateDataKey
+  Resource: arn:aws:kms:${aws:region}:${aws:accountId}:key/*
+  Condition:
+    StringEquals:
+      "kms:ViaService":
+        - dynamodb.${aws:region}.amazonaws.com
+        - s3.${aws:region}.amazonaws.com
+
+- Effect: Allow
+  Action:
+    - logs:CreateLogGroup
+    - logs:CreateLogStream
+    - logs:PutLogEvents
+  Resource: arn:aws:logs:${aws:region}:${aws:accountId}:log-group:/aws/lambda/${self:service}-${sls:stage}-*
+
+- Effect: Allow
+  Action:
+    - cognito-idp:AdminGetUser
+    - cognito-idp:AdminInitiateAuth
+    - cognito-idp:AdminSetUserPassword
+    - cognito-idp:AdminUserGlobalSignOut
+  Resource: arn:aws:cognito-idp:${aws:region}:${aws:accountId}:userpool/*
