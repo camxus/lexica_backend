@@ -17,10 +17,6 @@ export const getFields = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.user_id;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     try {
       const result = await dynamo.send(
         new QueryCommand({
