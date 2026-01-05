@@ -19,11 +19,7 @@ export const uploadAvatar: RequestHandler = upload.single("avatar_file");
 export const getProfile = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.user_id;
-
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
+    
     try {
       const result = await dynamo.send(
         new GetItemCommand({
@@ -53,10 +49,6 @@ export const getProfile = asyncHandler(
 export const updateProfile = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.user_id;
-
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
 
     let { first_name, last_name, bio } = req.body;
 
@@ -197,34 +189,6 @@ export const updateProfile = asyncHandler(
         );
       }
 
-      res.status(500).json({ error: error.message });
-    }
-  }
-);
-
-export const getUserProgress = asyncHandler(
-  async (req: AuthenticatedRequest, res: Response) => {
-    const userId = req.user?.user_id;
-
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    try {
-      const result = await dynamo.send(
-        new QueryCommand({
-          TableName: ARTICLES_TABLE,
-          IndexName: "UserProgressIndex",
-          KeyConditionExpression: "user_id = :uid",
-          ExpressionAttributeValues: marshall({ ":uid": userId }),
-        })
-      );
-
-      const progress = result.Items?.map((item) => unmarshall(item)) || [];
-
-      res.status(200).json({ progress });
-    } catch (error: any) {
-      console.error("Get user progress error:", error);
       res.status(500).json({ error: error.message });
     }
   }
