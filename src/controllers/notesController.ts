@@ -18,10 +18,6 @@ export const getNotes = asyncHandler(
     const userId = req.user?.user_id;
     const { topicSlug, limit = "20", lastKey } = req.query;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     try {
       const params: any = {
         TableName: NOTES_TABLE,
